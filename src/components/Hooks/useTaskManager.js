@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Task from "../Task" ;
 
 function useTaskManager() {
   const [tasks, setTasks] = useState([]);
@@ -13,26 +12,27 @@ function useTaskManager() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  const createTask = (description) => {
+  const createTask = (name, description) => {
     const newTask = {
       id: Date.now(),
-      description,
+      name,
+      description: description || "",
       completed: false,
     };
-    setTasks([...tasks, newTask]);
-  };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  }
 
   const updateTask = (id, updatedTask) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, ...updatedTask } : task
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, ...updatedTask } : task
+      )
     );
-    setTasks(updatedTasks);
-  };
+  }
 
   const deleteTask = (id) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
-    setTasks(updatedTasks);
-  };
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  }
 
   return {
     tasks,
@@ -43,4 +43,3 @@ function useTaskManager() {
 }
 
 export default useTaskManager;
-
