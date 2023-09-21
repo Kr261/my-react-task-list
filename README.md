@@ -2,10 +2,9 @@
 
 Este es un aplicativo de tareas que permite gestionar y organizar tus tareas diarias. Puedes crear nuevas tareas, marcarlas como completadas, editar su nombre y descripción, y eliminar tareas existentes.
 
+## Funcionalidades
 
-## Funcionalidades 
-
-- Crear nuevas tareas con un nombre y una descripción (opcional). 
+- Crear nuevas tareas con un nombre y una descripción (opcional).
 - Marcar las tareas como completadas o pendientes utilizando un checkbox.
 - Editar el nombre y la descripción de una tarea existente.
 - Eliminar tareas de la lista.
@@ -20,28 +19,12 @@ Debido a complicaciones técnicas con mi dispositivo, tuve que reiniciar el proy
 
 Agradezco su comprensión y estoy disponible para responder cualquier pregunta o proporcionar más detalles sobre las modificaciones realizadas.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Cómo Ejecutar el Aplicativo
 
 1. Clona el repositorio en tu máquina local.
 2. Abre una terminal en el directorio del proyecto.
 3. Ejecuta el comando `npm install` para instalar las dependencias.
-4. Ejecuta el comando `npm start` para iniciar la aplicación en modo de desarrollo.
+4. Ejecuta el comando `npm run dev` para iniciar la aplicación en modo de desarrollo.
 5. Abre tu navegador web y visita `http://localhost:3000` para ver el aplicativo.
 
 ¡Disfruta organizando tus tareas con esta aplicación!
-
-
-
