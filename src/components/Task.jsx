@@ -1,73 +1,80 @@
 import React, { useState } from 'react';
-import './Styles/Task.css';
-import { FiEdit2 } from 'react-icons/fi';
+import './Styles/Task.css'; // Asegúrate de que Task.css está en la ruta correcta
+import { BiEditAlt } from 'react-icons/bi';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { BiSolidChevronRightCircle } from 'react-icons/bi';
 import { ImCancelCircle } from 'react-icons/im';
+import { Box, Checkbox, Flex, Input, IconButton } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import DeleteModal from './modals/DeleteModal';
+import EditTaskModal from './modals/EditTaskModal';
 
-function Task({ task, onUpdate, onDelete }) {
-  const { id, name, description, completed } = task;
+function Task({ task, onUpdateTask, onDeleteTask }) {
+  const [editing, setEditing] = useState(false);
+  const [editedName, setEditedName] = useState(task.name);
+  const [editedDescription, setEditedDescription] = useState(task.description);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [updatedName, setUpdatedName] = useState(name);
-  const [updatedDescription, setUpdatedDescription] = useState(description);
-
-  const handleNameChange = (e) => {
-    setUpdatedName(e.target.value);
+  const handleCheck = (completed) => {
+    onUpdateTask(task.id, { completed });
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  }
+  const handleDelete = () => {
+    setShowDeleteModal(true);
+  };
 
-  const handleCancel = () => {
-    setIsEditing(false);
-    setUpdatedName(name);
-    setUpdatedDescription(description);
-  }
+  const confirmDelete = () => {
+    onDeleteTask(task.id);
+    setShowDeleteModal(false);
+  };
 
-  const handleSave = () => {
-    onUpdate(id, { name: updatedName, description: updatedDescription });
-    setIsEditing(false);
-  }
-
-  const handleDescriptionChange = (e) => {
-    setUpdatedDescription(e.target.value);
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
   };
 
   return (
-    <div className='task'>
-
-      {isEditing ? (
-        <>
-          <input type="text" value={updatedName} onChange={handleNameChange} />
-          <input type="text" value={updatedDescription} onChange={handleDescriptionChange} />
-          <button onClick={handleSave}><BiSolidChevronRightCircle /></button>
-          <button onClick={handleCancel}><ImCancelCircle /></button>
-        </>
+    <Box className={`task ${editing ? 'editing' : ''}`}>
+      {editing ? (
+        <Flex className="task-row" alignItems="center" justifyContent="flex-end">
+          <Input
+            type="text"
+            value={editedName}
+            onChange={(e) => setEditedName(e.target.value)}
+          />
+          <Input
+            type="text"
+            value={editedDescription}
+            onChange={(e) => setEditedDescription(e.target.value)}
+          />
+        </Flex>
       ) : (
-        <>
-          <div>
-            
-          <div className='task-header'> 
-          <input
-            type="checkbox"
-            checked={completed}
-            onChange={(e) => {
-              const updatedTask = { completed: e.target.checked };
-              onUpdate(id, updatedTask);
-            }}
+        <Flex className="task-row" alignItems="center" justifyContent="space-between">
+          <Flex className="task-info" alignItems="center">
+            <Checkbox
+              isChecked={task.completed}
+              onChange={(e) => handleCheck(e.target.checked)}
             />
-          <h4>{name}</h4>
-          <button onClick={handleEdit}><FiEdit2 /></button>
-          <button onClick={() => onDelete(id)}><AiOutlineDelete /></button>
-          </div>
-          <p>{description}</p>
-          </div>
-        </>
+            <Box as="h4" marginLeft="2">
+              {task.name}
+            </Box>
+          </Flex>
+          <Flex className="task-actions" alignItems="center">
+            <EditTaskModal task={task} onUpdateTask={onUpdateTask} />
+            <IconButton
+              aria-label="Delete Task"
+              colorScheme="red"
+              icon={<DeleteIcon />}
+              onClick={handleDelete}
+            />
+          </Flex>
+        </Flex>
       )}
 
-    </div>
+      <DeleteModal
+        isOpen={showDeleteModal}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+      />
+    </Box>
   );
 }
 

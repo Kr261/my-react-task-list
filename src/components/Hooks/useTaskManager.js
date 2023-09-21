@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function useTaskManager() {
   const [tasks, setTasks] = useState([]);
@@ -16,23 +16,21 @@ function useTaskManager() {
     const newTask = {
       id: Date.now(),
       name,
-      description: description || "",
+      description: description || '',
       completed: false,
     };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  }
+    setTasks(prevTasks => [...prevTasks, newTask]);
+  };
 
   const updateTask = (id, updatedTask) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, ...updatedTask } : task
-      )
+    setTasks(prevTasks =>
+      prevTasks.map(task => (task.id === id ? { ...task, ...updatedTask } : task))
     );
-  }
+  };
 
-  const deleteTask = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  }
+  const deleteTask = id => {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+  };
 
   return {
     tasks,
